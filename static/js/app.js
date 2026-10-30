@@ -69,7 +69,8 @@ class SoundFX {
   }
 
   peek() {
-    this.playTone(660, "sine", 0.25, 0.15);
+    this.playTone(660, "sine", 0.18, 0.15);
+    setTimeout(() => this.playTone(880, "sine", 0.28, 0.18), 80);
   }
 
   error() {
@@ -313,11 +314,22 @@ const App = {
 
       const container = document.getElementById("stackItems");
       const topNode = container.lastElementChild;
+      const topPointer = document.getElementById("stackTopPointer");
+
       if (topNode) {
+        topNode.scrollIntoView({ behavior: "smooth", block: "nearest" });
         topNode.classList.remove("item-peek");
         void topNode.offsetWidth;
         topNode.classList.add("item-peek");
-        setTimeout(() => topNode.classList.remove("item-peek"), 2000);
+
+        if (topPointer) {
+          topPointer.classList.remove("pointer-shine");
+          void topPointer.offsetWidth;
+          topPointer.classList.add("pointer-shine");
+          setTimeout(() => topPointer.classList.remove("pointer-shine"), 2800);
+        }
+
+        setTimeout(() => topNode.classList.remove("item-peek"), 2800);
       }
     } catch (err) {
       console.error("Error en Peek:", err);
@@ -397,14 +409,24 @@ const App = {
         <span class="item-value-text" title="${itemVal}">${itemVal}</span>
         <span class="item-index-badge">i: ${idx}</span>
       `;
+
+      block.addEventListener("click", () => {
+        sfx.peek();
+        block.classList.remove("item-peek");
+        void block.offsetWidth;
+        block.classList.add("item-peek");
+        this.showAlert("stackAlert", `Elemento seleccionado: '${itemVal}' (índice ${idx})`, "alert-info");
+        setTimeout(() => block.classList.remove("item-peek"), 2500);
+      });
+
       container.appendChild(block);
     });
 
     topPointer.classList.remove("hidden");
     document.getElementById("stackTopIdx").textContent = stackState.top_index;
 
-    const itemHeight = 35;
-    const bottomOffset = 8 + (stackState.items.length - 1) * itemHeight + 8;
+    const itemHeight = 41;
+    const bottomOffset = 14 + (stackState.items.length - 1) * itemHeight;
     topPointer.style.top = `${280 - bottomOffset}px`;
   },
 
@@ -487,11 +509,22 @@ const App = {
 
       const container = document.getElementById("queueItems");
       const frontNode = container.firstElementChild;
+      const frontPointer = document.getElementById("queueFrontPointer");
+
       if (frontNode) {
+        frontNode.scrollIntoView({ behavior: "smooth", inline: "nearest" });
         frontNode.classList.remove("item-peek");
         void frontNode.offsetWidth;
         frontNode.classList.add("item-peek");
-        setTimeout(() => frontNode.classList.remove("item-peek"), 2000);
+
+        if (frontPointer) {
+          frontPointer.classList.remove("pointer-shine");
+          void frontPointer.offsetWidth;
+          frontPointer.classList.add("pointer-shine");
+          setTimeout(() => frontPointer.classList.remove("pointer-shine"), 2800);
+        }
+
+        setTimeout(() => frontNode.classList.remove("item-peek"), 2800);
       }
     } catch (err) {
       console.error("Error en Queue Peek:", err);
@@ -574,6 +607,16 @@ const App = {
         <span class="item-value-text" title="${itemVal}">${itemVal}</span>
         <span class="item-index-badge">i: ${idx}</span>
       `;
+
+      block.addEventListener("click", () => {
+        sfx.peek();
+        block.classList.remove("item-peek");
+        void block.offsetWidth;
+        block.classList.add("item-peek");
+        this.showAlert("queueAlert", `Elemento en Cola: '${itemVal}' (índice ${idx})`, "alert-info");
+        setTimeout(() => block.classList.remove("item-peek"), 2500);
+      });
+
       container.appendChild(block);
     });
 
@@ -726,18 +769,45 @@ const App = {
         return;
       }
 
+      const container = document.getElementById("listChain");
+      const targetIndex = data.operation.index;
+
+      // Recorrido visual paso a paso de los nodos previos
+      this.showAlert("listAlert", `Recorriendo nodos secuencialmente buscando '${val}'...`, "alert-info");
+
+      const stepDelay = Math.max(100, Math.min(220, 700 / (targetIndex + 1)));
+
+      for (let i = 0; i <= targetIndex; i++) {
+        const nodeWrapper = container.children[i];
+        if (!nodeWrapper) break;
+        const inner = nodeWrapper.querySelector(".linked-node");
+        if (!inner) continue;
+
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            sfx.playTone(360 + i * 45, "sine", 0.08, 0.08);
+            inner.classList.add("item-peek");
+            nodeWrapper.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            if (i < targetIndex) {
+              setTimeout(() => inner.classList.remove("item-peek"), stepDelay * 0.8);
+            }
+            resolve();
+          }, stepDelay);
+        });
+      }
+
       sfx.peek();
       this.showAlert("listAlert", `Resultado: ${data.operation.message}`, "alert-info");
 
-      const container = document.getElementById("listChain");
-      const targetNode = container.children[data.operation.index];
+      const targetNode = container.children[targetIndex];
       if (targetNode) {
         const innerNode = targetNode.querySelector(".linked-node");
         if (innerNode) {
+          innerNode.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
           innerNode.classList.remove("item-peek");
           void innerNode.offsetWidth;
           innerNode.classList.add("item-peek");
-          setTimeout(() => innerNode.classList.remove("item-peek"), 2500);
+          setTimeout(() => innerNode.classList.remove("item-peek"), 3000);
         }
       }
     } catch (err) {
@@ -830,6 +900,20 @@ const App = {
         </div>
         <span class="node-arrow">──►</span>
       `;
+
+      const innerNode = wrapper.querySelector(".linked-node");
+      if (innerNode) {
+        innerNode.addEventListener("click", () => {
+          sfx.peek();
+          innerNode.classList.remove("item-peek");
+          void innerNode.offsetWidth;
+          innerNode.classList.add("item-peek");
+          const nextText = idx < listState.nodes.length - 1 ? listState.nodes[idx + 1].value : "NULL";
+          this.showAlert("listAlert", `Nodo [${idx}]: Valor ${node.value} (siguiente ➔ ${nextText})`, "alert-info");
+          setTimeout(() => innerNode.classList.remove("item-peek"), 2500);
+        });
+      }
+
       container.appendChild(wrapper);
     });
 
