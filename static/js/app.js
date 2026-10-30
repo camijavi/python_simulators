@@ -4,16 +4,16 @@
  * efectos de sonido Web Audio API y comunicación con Flask API.
  */
 
-// Paleta de gradientes para bloques
+// Paleta de gradientes para bloques inspirada en el logo PyData Visualizer
 const ITEM_GRADIENTS = [
-  "linear-gradient(135deg, #ec4899 0%, #be185d 100%)", // Rosa
-  "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)", // Violeta
-  "linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)", // Cian
-  "linear-gradient(135deg, #10b981 0%, #047857 100%)", // Esmeralda
-  "linear-gradient(135deg, #f59e0b 0%, #b45309 100%)", // Ámbar
-  "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)", // Azul
-  "linear-gradient(135deg, #14b8a6 0%, #0f766e 100%)", // Verde azulado
-  "linear-gradient(135deg, #f43f5e 0%, #be123c 100%)", // Carmesí
+  "linear-gradient(135deg, #FFA9C2 0%, #F472B6 100%)", // Rosa Pastel (Disco Superior Pila)
+  "linear-gradient(135deg, #FCB075 0%, #FB923C 100%)", // Melocotón Cálido (Bloque Cola / Data)
+  "linear-gradient(135deg, #FDDA76 0%, #FBBF24 100%)", // Amarillo Pastel (Bloque Cola / Serpiente)
+  "linear-gradient(135deg, #A7EDC1 0%, #34D399 100%)", // Verde Menta (Nodo Lista / Py)
+  "linear-gradient(135deg, #76B6F0 0%, #38BDF8 100%)", // Azul Cielo (Bloque Cola / Nodo 2)
+  "linear-gradient(135deg, #CFA7F4 0%, #A78BFA 100%)", // Lavanda / Orquídea (Disco Medio Pila / Visualizer)
+  "linear-gradient(135deg, #93C5FD 0%, #60A5FA 100%)", // Azul Periwinkle (Disco Inferior Pila)
+  "linear-gradient(135deg, #A9DBF4 0%, #7DD3FC 100%)", // Celeste Suave
 ];
 
 const SAMPLE_NAMES = [

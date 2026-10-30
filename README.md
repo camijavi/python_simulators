@@ -1,8 +1,7 @@
-# 🥞 Simulador Visual: Pilas, Colas y Listas Enlazadas (Stacks, Queues & Sorted Linked Lists)
-
+# 🥞 PyData Visualizer: Simulador Visual de Estructuras de Datos
 > **Made by Camila Navarro & Francis Solorzano**
 
-Un simulador web educativo e interactivo desarrollado en **Python** y **Flask** que visualiza en tiempo real las operaciones, punteros y comportamiento en memoria de tres estructuras de datos fundamentales:
+Un simulador web educativo e interactivo desarrollado en **Python** y **Flask** con diseño e identidad visual inspirada en el logo oficial **PyData Visualizer**. Visualiza en tiempo real las operaciones, punteros y comportamiento en memoria de tres estructuras de datos fundamentales:
 - **Pilas (Stacks - LIFO)**
 - **Colas (Queues - FIFO)**
 - **Listas Enlazadas Ordenadas (Sorted Singly Linked Lists)** con base en los principios teóricos del aula (`read.me`).
@@ -55,9 +54,11 @@ python_simulators/
 │   └── index.html         # Plantilla HTML5 con interfaz en español y pestañas educativas
 └── static/
     ├── css/
-    │   └── style.css      # Estilos modernos, diseño responsive y animaciones CSS
-    └── js/
-        └── app.js         # Lógica interactiva del cliente y efectos de sonido Web Audio
+    │   └── style.css      # Estilos modernos con paleta del logo PyData Visualizer
+    ├── js/
+    │   └── app.js         # Lógica interactiva del cliente y efectos de sonido Web Audio
+    └── img/
+        └── logo.png       # Logo oficial de PyData Visualizer
 ```
 
 ---

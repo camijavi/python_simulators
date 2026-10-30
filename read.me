@@ -1,4 +1,4 @@
-# Guía y Explicación del Simulador de Estructuras de Datos
+# Guía y Explicación del Simulador de Estructuras de Datos (PyData Visualizer)
 > **Made by Camila Navarro & Francis Solorzano**
 
 ## 1. Teoría Explicada en Clase
@@ -33,34 +33,34 @@
 
 ## 2. ¿Cómo Funciona el Simulador?
 
-El simulador es una aplicación web interactiva desarrollada con **Python** y **Flask** en el backend y una interfaz moderna con **animaciones CSS, iconos SVG y síntesis de audio** en el frontend.
+El simulador es una aplicación web interactiva desarrollada con **Python** y **Flask** en el backend y una interfaz moderna con **animaciones CSS, iconos SVG, paleta inspirada en el logo oficial PyData Visualizer y síntesis de audio** en el frontend.
 
 ### A. Navegación por Pestañas Individuales
 En la parte superior se presentan tres pestañas principales para navegar de forma independiente e individual en cada simulador:
-1. **Pestaña Pila (Stack)**: Muestra exclusivamente el simulador vertical LIFO.
-2. **Pestaña Cola (Queue)**: Muestra la cinta horizontal de flujo FIFO.
-3. **Pestaña Lista Enlazada (Linked List)**: Muestra la cadena de nodos con punteros y enlaces dinámicos.
+1. **Pestaña Pila (Stack)**: Muestra exclusivamente el simulador vertical LIFO con su vaso y discos pastel (rosa y lavanda).
+2. **Pestaña Cola (Queue)**: Muestra la cinta horizontal de flujo FIFO con sus bloques de colores (melocotón, amarillo y azul cielo).
+3. **Pestaña Lista Enlazada (Linked List)**: Muestra la cadena de nodos con punteros y enlaces dinámicos en verde menta y celeste.
 
 ---
 
 ### B. Simulador de Pila (Stack - LIFO)
-1. **Vaso de Precipitados Vertical**:
+1. **Vaso Vertical**:
    - Posee un fondo cerrado y un tope abierto superior.
    - Cuenta con un puntero dinámico flotante **TOPE [i]** que sigue en tiempo real la altura del elemento más reciente.
 2. **Operaciones Disponibles**:
    - **Apilar (Push)**: Ingresa un valor en la caja de texto (o genera uno aleatorio con el botón de dado) y pulsa "Apilar". El elemento cae con una animación de descenso hacia la cima de la pila.
    - **Desapilar (Pop)**: Retira el elemento de la cima con una animación ascendente de despegue y desvanecimiento.
-   - **Ver Tope (Peek)**: Hace palpitar en color azul brillante el elemento de la cima sin modificar la estructura.
+   - **Ver Tope (Peek)**: Hace palpitar en color brillante el elemento de la cima sin modificar la estructura.
    - **Vaciar**: Limpia todos los elementos de la pila.
-3. **Control de Capacidad**:
-   - Mediante el control deslizante (slider) se puede configurar la capacidad máxima (3 a 10 elementos).
+3. **Control de Capacidad y Desplazamiento**:
+   - Capacidad fija establecida en **7 elementos** con scroller interno vertical para prevenir solapamientos.
    - Si se intenta apilar más allá del límite, se activa la alerta de **Desbordamiento de Pila (Stack Overflow)**.
    - Si se intenta desapilar una pila vacía, se activa la alerta de **Subdesbordamiento (Stack Underflow)**.
 
 ---
 
 ### C. Simulador de Cola (Queue - FIFO)
-1. **Tubería / Pista Horizontal de Flujo**:
+1. **Pista Horizontal de Flujo**:
    - Los elementos entran por el extremo derecho (**FINAL / REAR**) y avanzan hacia la izquierda (**FRENTE / FRONT**).
    - Punteros visuales independientes marcan claramente quién es el primer elemento a ser atendido (**FRENTE**, índice 0) y quién fue el último en llegar (**FINAL**).
 2. **Operaciones Disponibles**:
@@ -68,8 +68,8 @@ En la parte superior se presentan tres pestañas principales para navegar de for
    - **Desencolar**: Atiende y retira el elemento del frente con una animación hacia la izquierda.
    - **Ver Frente**: Resalta el nodo en la posición 0.
    - **Vaciar**: Limpia la cola por completo.
-3. **Control de Capacidad**:
-   - Ajustable entre 3 y 10 posiciones con protección ante **Queue Overflow** y **Queue Underflow**.
+3. **Control de Capacidad y Desplazamiento**:
+   - Capacidad fija configurada en **7 posiciones** con scroller horizontal interno y protección ante **Queue Overflow** y **Queue Underflow**.
 
 ---
 
@@ -88,6 +88,8 @@ En la parte superior se presentan tres pestañas principales para navegar de for
    - **Quitar Valor**: Permite ingresar un número específico y eliminarlo; los nodos adyacentes se reconectan automáticamente para mantener la lista íntegra y ordenada.
    - **Buscar**: Recorre nodo por nodo comparando valores y reporta la posición encontrada junto al número de comparaciones realizadas, resaltando el nodo con un pulso luminoso.
    - **Vaciar**: Restablece `HEAD = NULL`.
+3. **Control de Capacidad y Desplazamiento**:
+   - Capacidad fija en **7 nodos** con scroller horizontal y margen superior para garantizar que la etiqueta HEAD no se corte.
 
 ---
 
@@ -97,6 +99,14 @@ En la parte superior se presentan tres pestañas principales para navegar de for
 - **Llenado Rápido (3)**: Carga 3 elementos de prueba aleatorios en las estructuras.
 - **Reiniciar Todo**: Vacía simultáneamente la pila, la cola y la lista enlazada.
 - **Sección Educativa**: Pestañas con comparativa detallada de complejidades y código Python canónico con explicaciones teóricas.
+- **Paleta Temática PyData Visualizer**:
+  - Fondo Índigo Profundo: `#1D284A` y `#16203B`
+  - Paneles y Tarjetas: `#253664`
+  - Acentos de Estructuras:
+    - Pila: Rosa Pastel (`#FFA9C2`) y Lavanda (`#CFA7F4`)
+    - Cola: Melocotón Cálido (`#FCB075`) y Amarillo Pastel (`#FDDA76`)
+    - Lista Enlazada: Verde Menta (`#A7EDC1`) y Celeste (`#A9DBF4`)
+  - Identidad tipográfica: Mint (`Py`), Peach (`Data`), Lavender (`VISUALIZER`)
 
 ---
 

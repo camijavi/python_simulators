@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador Visual</title>
+  <title>PyData Visualizer</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
@@ -18,35 +18,14 @@
     <!-- Encabezado Superior -->
     <header class="app-header">
       <div class="header-branding">
-        <div class="logo-icon">
-          <!-- Icono SVG Pila -->
-          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="m12 2 10 5-10 5-10-5Z" />
-            <path d="m2 12 10 5 10-5" />
-            <path d="m2 17 10 5 10-5" />
-          </svg>
-          <span class="icon-divider">/</span>
-          <!-- Icono SVG Cola -->
-          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-            <circle cx="9" cy="7" r="4" />
-            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-          </svg>
-          <span class="icon-divider">/</span>
-          <!-- Icono SVG Lista Enlazada -->
-          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-          </svg>
+        <div class="brand-logo-wrapper">
+          <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="PyData Visualizer Logo"
+            class="brand-logo-img">
         </div>
         <div>
-          <h1>Simulador Visual de Estructuras de Datos</h1>
-          <p class="subtitle">Explorador Interactivo de Algoritmos: Pila (LIFO), Cola (FIFO) y Lista Enlazada Ordenada
-          </p>
+          <h1 class="header-title"><span class="title-py">Py</span><span class="title-data">Data</span> <span
+              class="title-vis">VISUALIZER</span></h1>
+          <p class="subtitle">Simulador Visual de Estructuras de Datos • LIFO, FIFO y Lista Enlazada Ordenada</p>
           <p class="header-authors">Made by <strong>Camila Navarro</strong> &amp; <strong>Francis Solorzano</strong></p>
         </div>
       </div>
@@ -535,7 +514,8 @@
               <li><strong>Duplicados:</strong> Permitidos</li>
               <li><strong>Complejidad:</strong> O(1) Enqueue, O(1) Dequeue</li>
               <li><strong>Estructura Python:</strong> <code>collections.deque</code> con <code>append()</code> y
-                <code>popleft()</code></li>
+                <code>popleft()</code>
+              </li>
             </ul>
           </div>
           <div class="comp-card">
@@ -634,8 +614,9 @@
 
     <!-- Pie de Página -->
     <footer class="app-footer">
-      <p>Simulador Visual de Estructuras de Datos • Made by <strong>Camila Navarro</strong> &amp; <strong>Francis
-          Solorzano</strong></p>
+      <p>PyData Visualizer • Simulador Visual de Estructuras de Datos • Made by <strong>Camila Navarro</strong> &amp;
+        <strong>Francis Solorzano</strong>
+      </p>
     </footer>
   </div>
 
