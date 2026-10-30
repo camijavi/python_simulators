@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stacks & Queues Visual Simulator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-branding">
+        <div class="logo-icon">
+          <span class="icon-stack">🥞</span>
+          <span class="icon-arrow">⇄</span>
+          <span class="icon-queue">🚶</span>
+        </div>
+        <div>
+          <h1>Stacks & Queues Visual Simulator</h1>
+          <p class="subtitle">Interactive LIFO (Last-In, First-Out) & FIFO (First-In, First-Out) Algorithm Explorer</p>
+        </div>
+      </div>
+
+      <!-- Global Controls -->
+      <div class="global-controls">
+        <div class="view-switch-group" role="tablist" aria-label="View Modes">
+          <button class="view-btn active" data-view="split" title="Side-by-Side Comparison">Split View</button>
+          <button class="view-btn" data-view="stack" title="Stack Focus">Stack Only</button>
+          <button class="view-btn" data-view="queue" title="Queue Focus">Queue Only</button>
+        </div>
+
+        <div class="utility-controls">
+          <div class="speed-control" title="Animation Speed">
+            <span class="speed-label">Speed:</span>
+            <select id="animationSpeed" class="select-input">
+              <option value="0.2">Fast (0.2s)</option>
+              <option value="0.6" selected>Normal (0.6s)</option>
+              <option value="1.2">Slow (1.2s)</option>
+            </select>
+          </div>
+
+          <button id="soundToggle" class="btn btn-icon" title="Toggle Sound Effects">
+            <span class="sound-icon">🔊</span>
+            <span class="sound-text">Sound: ON</span>
+          </button>
+
+          <button id="bulkFillBtn" class="btn btn-secondary" title="Quickly add 3 items to both">
+            🎲 Bulk Fill (3)
+          </button>
+
+          <button id="resetAllBtn" class="btn btn-danger-outline" title="Clear all data">
+            🔄 Reset All
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Visual Simulator Grid -->
+    <main class="simulators-grid" id="simulatorsGrid">
+      
+      <!-- ================= STACK PANEL ================= -->
+      <section class="simulator-card stack-card" id="stackSection">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="badge badge-stack">LIFO</span>
+            <h2>Stack Simulator</h2>
+          </div>
+          <div class="card-meta">
+            <span class="meta-pill" id="stackCapacityPill">Capacity: 7</span>
+            <span class="meta-pill" id="stackSizePill">Size: 0 / 7</span>
+          </div>
+        </div>
+
+        <p class="card-desc">
+          <strong>Last-In, First-Out</strong>: Elements are pushed and popped exclusively from the <em>TOP</em>. Think of a stack of plates or undo/redo actions.
+        </p>
+
+        <!-- Stack Controls -->
+        <div class="controls-panel">
+          <div class="input-row">
+            <div class="input-wrapper">
+              <input type="text" id="stackInput" placeholder="Enter value (e.g. Plate #1, 42)" maxlength="16" autocomplete="off">
+              <button class="btn btn-ghost" id="stackRandomBtn" title="Generate random value">🎲</button>
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button id="stackPushBtn" class="btn btn-primary">
+              <span class="btn-arrow">↓</span> Push (Insert)
+            </button>
+            <button id="stackPopBtn" class="btn btn-warning">
+              <span class="btn-arrow">↑</span> Pop (Remove)
+            </button>
+            <button id="stackPeekBtn" class="btn btn-info">
+              👁️ Peek (Top)
+            </button>
+            <button id="stackClearBtn" class="btn btn-outline">
+              Clear
+            </button>
+          </div>
+
+          <div class="slider-row">
+            <label for="stackCapacitySlider">Max Capacity: <span id="stackCapVal">7</span></label>
+            <input type="range" id="stackCapacitySlider" min="3" max="10" value="7">
+          </div>
+        </div>
+
+        <!-- Stack Alert Notification -->
+        <div class="alert-box hidden" id="stackAlert"></div>
+
+        <!-- Stack Visual Container -->
+        <div class="visual-canvas stack-canvas-wrapper">
+          <div class="canvas-ruler">
+            <div class="ruler-marker top-marker">▲ Open Top (Entry & Exit)</div>
+          </div>
+          
+          <div class="stack-beaker" id="stackBeaker">
+            <!-- Pointers & Floating Indicator -->
+            <div class="pointer-tag pointer-top hidden" id="stackTopPointer">
+              <span class="pointer-arrow">➔</span>
+              <span class="pointer-text">TOP [i=<span id="stackTopIdx">0</span>]</span>
+            </div>
+
+            <!-- Items container (Elements rendered from bottom up) -->
+            <div class="stack-items-container" id="stackItems">
+              <!-- Rendered items will appear here -->
+            </div>
+
+            <div class="empty-state" id="stackEmptyState">
+              <div class="empty-icon">📥</div>
+              <p>Stack is empty</p>
+              <span class="subtext">Push an item to get started</span>
+            </div>
+          </div>
+
+          <div class="stack-base">
+            <span>Closed Base (Bottom)</span>
+          </div>
+        </div>
+
+        <!-- Stack Status Summary Footer -->
+        <div class="card-footer">
+          <div class="stat-pill"><span class="stat-label">Is Empty:</span> <strong id="stackIsEmpty">True</strong></div>
+          <div class="stat-pill"><span class="stat-label">Is Full:</span> <strong id="stackIsFull">False</strong></div>
+          <div class="stat-pill"><span class="stat-label">Top Element:</span> <strong id="stackTopVal">None</strong></div>
+          <div class="stat-pill"><span class="stat-label">Complexity:</span> <strong class="badge-complexity">O(1)</strong></div>
+        </div>
+      </section>
+
+      <!-- ================= QUEUE PANEL ================= -->
+      <section class="simulator-card queue-card" id="queueSection">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="badge badge-queue">FIFO</span>
+            <h2>Queue Simulator</h2>
+          </div>
+          <div class="card-meta">
+            <span class="meta-pill" id="queueCapacityPill">Capacity: 7</span>
+            <span class="meta-pill" id="queueSizePill">Size: 0 / 7</span>
+          </div>
+        </div>
+
+        <p class="card-desc">
+          <strong>First-In, First-Out</strong>: Elements are enqueued at the <em>REAR</em> (back) and dequeued from the <em>FRONT</em> (head). Think of a checkout counter or printer queue.
+        </p>
+
+        <!-- Queue Controls -->
+        <div class="controls-panel">
+          <div class="input-row">
+            <div class="input-wrapper">
+              <input type="text" id="queueInput" placeholder="Enter value (e.g. Customer #1, 99)" maxlength="16" autocomplete="off">
+              <button class="btn btn-ghost" id="queueRandomBtn" title="Generate random value">🎲</button>
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button id="queueEnqueueBtn" class="btn btn-primary">
+              <span class="btn-arrow">➔</span> Enqueue (Add)
+            </button>
+            <button id="queueDequeueBtn" class="btn btn-warning">
+              <span class="btn-arrow">➔</span> Dequeue (Serve)
+            </button>
+            <button id="queuePeekBtn" class="btn btn-info">
+              👁️ Peek (Front)
+            </button>
+            <button id="queueClearBtn" class="btn btn-outline">
+              Clear
+            </button>
+          </div>
+
+          <div class="slider-row">
+            <label for="queueCapacitySlider">Max Capacity: <span id="queueCapVal">7</span></label>
+            <input type="range" id="queueCapacitySlider" min="3" max="10" value="7">
+          </div>
+        </div>
+
+        <!-- Queue Alert Notification -->
+        <div class="alert-box hidden" id="queueAlert"></div>
+
+        <!-- Queue Visual Container -->
+        <div class="visual-canvas queue-canvas-wrapper">
+          <div class="pipeline-labels">
+            <div class="pipeline-end-tag front-tag">
+              <span class="tag-icon">🚪</span>
+              <span>FRONT (Exit / Dequeue)</span>
+            </div>
+            <div class="pipeline-end-tag rear-tag">
+              <span>REAR (Entry / Enqueue)</span>
+              <span class="tag-icon">📥</span>
+            </div>
+          </div>
+
+          <div class="queue-track" id="queueTrack">
+            <!-- Front & Rear Floating Indicators -->
+            <div class="queue-pointer front-pointer hidden" id="queueFrontPointer">
+              <span class="pointer-label">FRONT</span>
+              <span class="pointer-arrow-down">▼</span>
+            </div>
+            <div class="queue-pointer rear-pointer hidden" id="queueRearPointer">
+              <span class="pointer-label">REAR</span>
+              <span class="pointer-arrow-down">▼</span>
+            </div>
+
+            <!-- Items container (Horizontal track) -->
+            <div class="queue-items-container" id="queueItems">
+              <!-- Rendered items will appear here -->
+            </div>
+
+            <div class="empty-state" id="queueEmptyState">
+              <div class="empty-icon">🚶🚶</div>
+              <p>Queue is empty</p>
+              <span class="subtext">Enqueue an item to start the line</span>
+            </div>
+          </div>
+
+          <div class="pipeline-flow-arrow">
+            <span>◀ ◀ ◀ Items Flow Forward (FIFO Direction) ◀ ◀ ◀</span>
+          </div>
+        </div>
+
+        <!-- Queue Status Summary Footer -->
+        <div class="card-footer">
+          <div class="stat-pill"><span class="stat-label">Is Empty:</span> <strong id="queueIsEmpty">True</strong></div>
+          <div class="stat-pill"><span class="stat-label">Is Full:</span> <strong id="queueIsFull">False</strong></div>
+          <div class="stat-pill"><span class="stat-label">Front:</span> <strong id="queueFrontVal">None</strong></div>
+          <div class="stat-pill"><span class="stat-label">Rear:</span> <strong id="queueRearVal">None</strong></div>
+          <div class="stat-pill"><span class="stat-label">Complexity:</span> <strong class="badge-complexity">O(1)</strong></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Educational & History Section -->
+    <section class="bottom-section">
+      <div class="section-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="history">📋 Operation Log</button>
+        <button class="tab-btn" data-tab="comparison">⚖️ LIFO vs FIFO Comparison</button>
+        <button class="tab-btn" data-tab="code">🐍 Python Code & Complexity</button>
+        <button class="tab-btn" data-tab="applications">💡 Real-World Use Cases</button>
+      </div>
+
+      <div class="tab-content active" id="tab-history">
+        <div class="history-container">
+          <div class="history-header">
+            <h3>Recent Operations Log</h3>
+            <button id="clearLogBtn" class="btn btn-ghost-sm">Clear Log</button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="history-empty">No operations performed yet. Try pushing or enqueuing items!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-comparison">
+        <div class="comparison-grid">
+          <div class="comp-card">
+            <h4 class="comp-title-stack">🥞 Stack (LIFO)</h4>
+            <ul>
+              <li><strong>Acronym:</strong> Last In, First Out</li>
+              <li><strong>Insertion:</strong> Push (added to Top)</li>
+              <li><strong>Deletion:</strong> Pop (removed from Top)</li>
+              <li><strong>Pointers:</strong> Single pointer (`Top`)</li>
+              <li><strong>Analogy:</strong> Stack of cafeteria trays, pile of books</li>
+              <li><strong>Efficiency:</strong> O(1) Push, O(1) Pop, O(1) Peek</li>
+              <li><strong>Python Type:</strong> <code>list</code> with <code>append()</code> and <code>pop()</code></li>
+            </ul>
+          </div>
+          <div class="comp-card">
+            <h4 class="comp-title-queue">🚶 Queue (FIFO)</h4>
+            <ul>
+              <li><strong>Acronym:</strong> First In, First Out</li>
+              <li><strong>Insertion:</strong> Enqueue (added to Rear / Back)</li>
+              <li><strong>Deletion:</strong> Dequeue (removed from Front / Head)</li>
+              <li><strong>Pointers:</strong> Dual pointers (`Front` and `Rear`)</li>
+              <li><strong>Analogy:</strong> People waiting in line at a cinema or bank</li>
+              <li><strong>Efficiency:</strong> O(1) Enqueue, O(1) Dequeue (using deque)</li>
+              <li><strong>Python Type:</strong> <code>collections.deque</code> with <code>append()</code> & <code>popleft()</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-code">
+        <div class="code-snippets-grid">
+          <div class="code-box">
+            <div class="code-header">
+              <span>Python Stack (using list)</span>
+              <span class="badge badge-sm">O(1) Time</span>
+            </div>
+            <pre><code><span class="token-keyword">class</span> <span class="token-class">Stack</span>:
+    <span class="token-keyword">def</span> <span class="token-func">__init__</span>(<span class="token-param">self</span>):
+        <span class="token-param">self</span>.items = []
+
+    <span class="token-keyword">def</span> <span class="token-func">push</span>(<span class="token-param">self</span>, item):
+        <span class="token-param">self</span>.items.append(item)  <span class="token-comment"># O(1)</span>
+
+    <span class="token-keyword">def</span> <span class="token-func">pop</span>(<span class="token-param">self</span>):
+        <span class="token-keyword">if</span> <span class="token-keyword">not</span> <span class="token-param">self</span>.items:
+            <span class="token-keyword">raise</span> IndexError(<span class="token-string">"pop from empty stack"</span>)
+        <span class="token-keyword">return</span> <span class="token-param">self</span>.items.pop()   <span class="token-comment"># O(1) from end</span>
+
+    <span class="token-keyword">def</span> <span class="token-func">peek</span>(<span class="token-param">self</span>):
+        <span class="token-keyword">return</span> <span class="token-param">self</span>.items[-1]    <span class="token-comment"># O(1)</span></code></pre>
+          </div>
+
+          <div class="code-box">
+            <div class="code-header">
+              <span>Python Queue (using collections.deque)</span>
+              <span class="badge badge-sm">O(1) Time</span>
+            </div>
+            <pre><code><span class="token-keyword">from</span> collections <span class="token-keyword">import</span> deque
+
+<span class="token-keyword">class</span> <span class="token-class">Queue</span>:
+    <span class="token-keyword">def</span> <span class="token-func">__init__</span>(<span class="token-param">self</span>):
+        <span class="token-param">self</span>.items = deque()
+
+    <span class="token-keyword">def</span> <span class="token-func">enqueue</span>(<span class="token-param">self</span>, item):
+        <span class="token-param">self</span>.items.append(item)    <span class="token-comment"># O(1) at rear</span>
+
+    <span class="token-keyword">def</span> <span class="token-func">dequeue</span>(<span class="token-param">self</span>):
+        <span class="token-keyword">if</span> <span class="token-keyword">not</span> <span class="token-param">self</span>.items:
+            <span class="token-keyword">raise</span> IndexError(<span class="token-string">"dequeue from empty queue"</span>)
+        <span class="token-keyword">return</span> <span class="token-param">self</span>.items.popleft() <span class="token-comment"># O(1) from front!</span>
+
+    <span class="token-keyword">def</span> <span class="token-func">peek</span>(<span class="token-param">self</span>):
+        <span class="token-keyword">return</span> <span class="token-param">self</span>.items[0]       <span class="token-comment"># O(1)</span></code></pre>
+          </div>
+        </div>
+        <div class="code-note">
+          <strong>⚡ Why <code>collections.deque</code> instead of <code>list</code> for Queue?</strong>
+          In Python, calling <code>list.pop(0)</code> takes <em>O(N)</em> time because all subsequent elements must be shifted in memory. <code>collections.deque</code> is implemented as a doubly linked list of blocks, making <code>popleft()</code> true <em>O(1)</em>!
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-applications">
+        <div class="apps-grid">
+          <div class="app-column">
+            <h4>🥞 Stack Applications</h4>
+            <div class="app-card">
+              <h5>1. Function Call Stack & Recursion</h5>
+              <p>Operating systems and compilers use a call stack to keep track of active functions, return addresses, and local variables.</p>
+            </div>
+            <div class="app-card">
+              <h5>2. Undo / Redo Mechanism</h5>
+              <p>Every keystroke or action in text editors (VS Code, Word) is pushed onto an undo stack. Pressing Ctrl+Z pops the latest state.</p>
+            </div>
+            <div class="app-card">
+              <h5>3. Balanced Parentheses & Expression Parsing</h5>
+              <p>Compilers use stacks to match braces <code>{ [ ( ) ] }</code> and convert infix expressions to postfix (Reverse Polish Notation).</p>
+            </div>
+            <div class="app-card">
+              <h5>4. Browser Navigation History</h5>
+              <p>Every time you click a link, the URL is pushed to the back-stack. Clicking "Back" pops the current URL to reveal the previous one.</p>
+            </div>
+          </div>
+
+          <div class="app-column">
+            <h4>🚶 Queue Applications</h4>
+            <div class="app-card">
+              <h5>1. Breadth-First Search (BFS)</h5>
+              <p>Graph and tree traversal algorithms use queues to visit neighbor nodes level-by-level before going deeper.</p>
+            </div>
+            <div class="app-card">
+              <h5>2. Asynchronous Message Brokers</h5>
+              <p>Technologies like RabbitMQ, Apache Kafka, and Celery buffer messages and job tasks in queues for worker processing.</p>
+            </div>
+            <div class="app-card">
+              <h5>3. CPU Process Scheduling</h5>
+              <p>Operating systems organize runnable processes in ready queues using First-Come First-Served (FCFS) or Round Robin.</p>
+            </div>
+            <div class="app-card">
+              <h5>4. Hardware & IO Buffering</h5>
+              <p>Printer spoolers, keyboard buffer keystrokes, and audio streaming pipelines buffer packets in FIFO order.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Built with <strong>Python</strong> &amp; <strong>Flask</strong> • Interactive Data Structure Visualizer</p>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
