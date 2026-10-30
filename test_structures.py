@@ -1,15 +1,19 @@
 """
-Unit tests for Stack and Queue data structures.
+Unit tests for Stack, Queue, and SortedLinkedList data structures.
 """
 
 import unittest
 from structures import (
     Stack,
     Queue,
+    SortedLinkedList,
     StackOverflowError,
     StackUnderflowError,
     QueueOverflowError,
     QueueUnderflowError,
+    DuplicateValueError,
+    LinkedListUnderflowError,
+    NodeNotFoundError,
 )
 
 
@@ -98,7 +102,6 @@ class TestQueue(unittest.TestCase):
         self.assertEqual(peek_rec["element"], "Patient 1")
 
         self.queue.enqueue("Patient 2")
-        # Peek should still show the front item: Patient 1
         self.assertEqual(self.queue.peek()["element"], "Patient 1")
         self.assertEqual(self.queue.size(), 2)
 
@@ -140,6 +143,99 @@ class TestQueue(unittest.TestCase):
         rec = self.queue.clear()
         self.assertEqual(rec["action"], "CLEAR")
         self.assertTrue(self.queue.is_empty())
+
+
+class TestSortedLinkedList(unittest.TestCase):
+    def setUp(self):
+        self.ll = SortedLinkedList(capacity=5)
+
+    def test_initial_state(self):
+        self.assertTrue(self.ll.is_empty())
+        self.assertEqual(self.ll.size(), 0)
+        self.assertIsNone(self.ll.head)
+        self.assertEqual(self.ll.to_list(), [])
+
+    def test_sorted_insert(self):
+        # Insert out of order: 30, 10, 50, 20
+        self.ll.insert(30)
+        self.assertEqual(self.ll.to_list(), [30])
+
+        self.ll.insert(10) # Insert at head
+        self.assertEqual(self.ll.to_list(), [10, 30])
+
+        self.ll.insert(50) # Insert at tail
+        self.assertEqual(self.ll.to_list(), [10, 30, 50])
+
+        self.ll.insert(20) # Insert in middle
+        self.assertEqual(self.ll.to_list(), [10, 20, 30, 50])
+
+    def test_no_duplicate_values(self):
+        self.ll.insert(15)
+        self.assertEqual(self.ll.size(), 1)
+
+        # Attempt to insert same value should raise DuplicateValueError
+        with self.assertRaises(DuplicateValueError):
+            self.ll.insert(15)
+        self.assertEqual(self.ll.size(), 1)
+
+    def test_remove_head(self):
+        self.ll.insert(10)
+        self.ll.insert(20)
+        self.ll.insert(30)
+
+        rec = self.ll.remove_head()
+        self.assertEqual(rec["element"], 10)
+        self.assertEqual(self.ll.to_list(), [20, 30])
+
+    def test_remove_tail(self):
+        self.ll.insert(10)
+        self.ll.insert(20)
+        self.ll.insert(30)
+
+        rec = self.ll.remove_tail()
+        self.assertEqual(rec["element"], 30)
+        self.assertEqual(self.ll.to_list(), [10, 20])
+
+    def test_remove_specific_value(self):
+        self.ll.insert(5)
+        self.ll.insert(15)
+        self.ll.insert(25)
+
+        # Remove middle value
+        rec = self.ll.remove_value(15)
+        self.assertEqual(rec["element"], 15)
+        self.assertEqual(self.ll.to_list(), [5, 25])
+
+        # Remove head via remove_value
+        rec_head = self.ll.remove_value(5)
+        self.assertEqual(rec_head["element"], 5)
+        self.assertEqual(self.ll.to_list(), [25])
+
+        # Non-existing value
+        with self.assertRaises(NodeNotFoundError):
+            self.ll.remove_value(999)
+
+    def test_search(self):
+        self.ll.insert(10)
+        self.ll.insert(25)
+        self.ll.insert(40)
+
+        rec = self.ll.search(25)
+        self.assertTrue(rec["found"])
+        self.assertEqual(rec["index"], 1)
+
+        with self.assertRaises(NodeNotFoundError):
+            self.ll.search(99)
+
+    def test_underflow(self):
+        with self.assertRaises(LinkedListUnderflowError):
+            self.ll.remove_head()
+
+        with self.assertRaises(LinkedListUnderflowError):
+            self.ll.remove_tail()
+
+        with self.assertRaises(LinkedListUnderflowError):
+            self.ll.remove_value(10)
 
 
 if __name__ == "__main__":
