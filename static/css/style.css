@@ -150,6 +150,17 @@ body {
   font-weight: 500;
 }
 
+.header-authors {
+  font-size: 0.82rem;
+  color: #93c5fd;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.header-authors strong {
+  color: #ffffff;
+}
+
 .global-controls {
   display: flex;
   align-items: center;

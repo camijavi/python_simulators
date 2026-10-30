@@ -1,5 +1,7 @@
 # 🥞 Simulador Visual: Pilas, Colas y Listas Enlazadas (Stacks, Queues & Sorted Linked Lists)
 
+> **Made by Camila Navarro & Francis Solorzano**
+
 Un simulador web educativo e interactivo desarrollado en **Python** y **Flask** que visualiza en tiempo real las operaciones, punteros y comportamiento en memoria de tres estructuras de datos fundamentales:
 - **Pilas (Stacks - LIFO)**
 - **Colas (Queues - FIFO)**
