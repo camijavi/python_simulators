@@ -1,7 +1,7 @@
 /**
  * Simulador Visual Interactivo: Pilas, Colas y Listas Enlazadas
- * Maneja animaciones en la interfaz, efectos de sonido Web Audio API,
- * comunicación con la API REST de Flask y traducción de mensajes al español.
+ * Maneja navegación por pestañas individuales, animaciones en el DOM,
+ * efectos de sonido Web Audio API y comunicación con Flask API.
  */
 
 // Paleta de gradientes para bloques
@@ -54,7 +54,7 @@ class SoundFX {
       osc.start();
       osc.stop(this.ctx.currentTime + duration);
     } catch (e) {
-      console.warn("Error de audio:", e);
+      console.warn("Audio error:", e);
     }
   }
 
@@ -103,8 +103,8 @@ const App = {
     const soundToggle = document.getElementById("soundToggle");
     soundToggle.addEventListener("click", () => {
       sfx.enabled = !sfx.enabled;
-      soundToggle.querySelector(".sound-icon").textContent = sfx.enabled ? "🔊" : "🔇";
       soundToggle.querySelector(".sound-text").textContent = `Sonido: ${sfx.enabled ? "ACTIVO" : "SILENCIADO"}`;
+      soundToggle.style.opacity = sfx.enabled ? "1" : "0.6";
     });
 
     // Selector de Velocidad
@@ -115,18 +115,37 @@ const App = {
       document.documentElement.style.setProperty("--anim-speed", `${val}s`);
     });
 
-    // Modos de Vista
-    document.querySelectorAll(".view-btn").forEach(btn => {
+    // ================= Navegación de Pestañas de Simuladores =================
+    const simTabBtns = document.querySelectorAll(".sim-tab-btn");
+    const simPanels = {
+      stack: document.getElementById("stackSection"),
+      queue: document.getElementById("queueSection"),
+      linkedlist: document.getElementById("linkedListSection")
+    };
+
+    simTabBtns.forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
+        simTabBtns.forEach(b => {
+          b.classList.remove("active");
+          b.setAttribute("aria-selected", "false");
+        });
         btn.classList.add("active");
-        const view = btn.dataset.view;
-        const grid = document.getElementById("simulatorsGrid");
-        grid.className = `simulators-grid view-${view}`;
+        btn.setAttribute("aria-selected", "true");
+
+        const target = btn.dataset.sim;
+        Object.keys(simPanels).forEach(key => {
+          if (simPanels[key]) {
+            if (key === target) {
+              simPanels[key].classList.add("active");
+            } else {
+              simPanels[key].classList.remove("active");
+            }
+          }
+        });
       });
     });
 
-    // Pestañas Educativas
+    // ================= Pestañas Educativas Inferiores =================
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -136,12 +155,6 @@ const App = {
         const target = document.getElementById(tabId);
         if (target) target.classList.add("active");
       });
-    });
-
-    // Limpiar Registro
-    document.getElementById("clearLogBtn").addEventListener("click", () => {
-      const list = document.getElementById("historyList");
-      list.innerHTML = `<div class="history-empty">Registro limpio. Listo para nuevas operaciones.</div>`;
     });
 
     // Controles Globales
@@ -217,7 +230,6 @@ const App = {
       const res = await fetch("/api/state");
       const data = await res.json();
       if (data.success) {
-        // Capacidades
         this.stackCapacity = data.stack.capacity;
         this.queueCapacity = data.queue.capacity;
         this.listCapacity = data.linked_list.capacity;
@@ -234,15 +246,6 @@ const App = {
         this.renderStack(data.stack);
         this.renderQueue(data.queue);
         this.renderLinkedList(data.linked_list);
-
-        // Cargar historial combinado
-        const allHistory = [
-          ...(data.stack_history || []),
-          ...(data.queue_history || []),
-          ...(data.linked_list_history || [])
-        ];
-        allHistory.sort((a, b) => a.timestamp - b.timestamp);
-        allHistory.forEach(record => this.appendHistoryEntry(record));
       }
     } catch (err) {
       console.error("Error al cargar estado inicial:", err);
@@ -274,7 +277,6 @@ const App = {
       input.value = "";
       sfx.push();
       this.clearAlert("stackAlert");
-      this.appendHistoryEntry(data.operation);
       this.renderStack(data.stack, { animatedAction: "push" });
     } catch (err) {
       console.error("Error en Push:", err);
@@ -306,7 +308,6 @@ const App = {
         }
 
         this.clearAlert("stackAlert");
-        this.appendHistoryEntry(data.operation);
         this.renderStack(data.stack);
       } catch (err) {
         console.error("Error en Pop:", err);
@@ -326,8 +327,7 @@ const App = {
       }
 
       sfx.peek();
-      this.showAlert("stackAlert", `🔍 Cima de Pila: '${data.operation.element}' (índice ${data.operation.index})`, "alert-info");
-      this.appendHistoryEntry(data.operation);
+      this.showAlert("stackAlert", `Elemento en la Cima: '${data.operation.element}' (índice ${data.operation.index})`, "alert-info");
 
       const container = document.getElementById("stackItems");
       const topNode = container.lastElementChild;
@@ -349,7 +349,6 @@ const App = {
       if (data.success) {
         sfx.clear();
         this.clearAlert("stackAlert");
-        this.appendHistoryEntry(data.operation);
         this.renderStack(data.stack);
       }
     } catch (err) {
@@ -423,8 +422,8 @@ const App = {
     document.getElementById("stackTopIdx").textContent = stackState.top_index;
 
     const itemHeight = 35;
-    const bottomOffset = 6 + (stackState.items.length - 1) * itemHeight + 8;
-    topPointer.style.top = `${250 - bottomOffset}px`;
+    const bottomOffset = 8 + (stackState.items.length - 1) * itemHeight + 8;
+    topPointer.style.top = `${280 - bottomOffset}px`;
   },
 
   // ==========================================
@@ -452,7 +451,6 @@ const App = {
       input.value = "";
       sfx.push();
       this.clearAlert("queueAlert");
-      this.appendHistoryEntry(data.operation);
       this.renderQueue(data.queue, { animatedAction: "enqueue" });
     } catch (err) {
       console.error("Error en Enqueue:", err);
@@ -484,7 +482,6 @@ const App = {
         }
 
         this.clearAlert("queueAlert");
-        this.appendHistoryEntry(data.operation);
         this.renderQueue(data.queue);
       } catch (err) {
         console.error("Error en Dequeue:", err);
@@ -504,8 +501,7 @@ const App = {
       }
 
       sfx.peek();
-      this.showAlert("queueAlert", `🔍 Frente de Cola: '${data.operation.element}' (índice 0)`, "alert-info");
-      this.appendHistoryEntry(data.operation);
+      this.showAlert("queueAlert", `Frente de la Cola: '${data.operation.element}' (índice 0)`, "alert-info");
 
       const container = document.getElementById("queueItems");
       const frontNode = container.firstElementChild;
@@ -527,7 +523,6 @@ const App = {
       if (data.success) {
         sfx.clear();
         this.clearAlert("queueAlert");
-        this.appendHistoryEntry(data.operation);
         this.renderQueue(data.queue);
       }
     } catch (err) {
@@ -600,22 +595,19 @@ const App = {
       container.appendChild(block);
     });
 
-    const itemSpacing = 60;
-    const offset = 10;
+    const itemSpacing = 70;
+    const offset = 12;
 
     frontPointer.classList.remove("hidden");
-    frontPointer.style.left = `${offset + 8}px`;
+    frontPointer.style.left = `${offset + 12}px`;
 
     rearPointer.classList.remove("hidden");
-    const rearX = offset + (queueState.items.length - 1) * itemSpacing + 8;
+    const rearX = offset + (queueState.items.length - 1) * itemSpacing + 12;
     rearPointer.style.left = `${rearX}px`;
   },
 
   // ==========================================
   // Lógica UI de Lista Enlazada (Linked List)
-  // Referencia a read.me:
-  // - Inserción en lugar exacto (ascendente, sin repetidos)
-  // - Eliminación manteniendo lista organizada (cabeza, cola, valor)
   // ==========================================
   async listInsert() {
     const input = document.getElementById("listInput");
@@ -639,7 +631,6 @@ const App = {
       input.value = "";
       sfx.push();
       this.clearAlert("listAlert");
-      this.appendHistoryEntry(data.operation);
       this.renderLinkedList(data.linked_list, { insertedValue: data.operation.element });
     } catch (err) {
       console.error("Error en Insertar Lista:", err);
@@ -665,7 +656,6 @@ const App = {
       }
 
       this.clearAlert("listAlert");
-      this.appendHistoryEntry(data.operation);
       this.renderLinkedList(data.linked_list);
     } catch (err) {
       console.error("Error al quitar cabeza:", err);
@@ -691,7 +681,6 @@ const App = {
       }
 
       this.clearAlert("listAlert");
-      this.appendHistoryEntry(data.operation);
       this.renderLinkedList(data.linked_list);
     } catch (err) {
       console.error("Error al quitar cola:", err);
@@ -725,7 +714,6 @@ const App = {
       input.value = "";
       sfx.pop();
       this.clearAlert("listAlert");
-      this.appendHistoryEntry(data.operation);
       this.renderLinkedList(data.linked_list);
     } catch (err) {
       console.error("Error al quitar valor:", err);
@@ -757,10 +745,8 @@ const App = {
       }
 
       sfx.peek();
-      this.showAlert("listAlert", `🔍 ${data.operation.message}`, "alert-info");
-      this.appendHistoryEntry(data.operation);
+      this.showAlert("listAlert", `Resultado: ${data.operation.message}`, "alert-info");
 
-      // Resaltar nodo encontrado
       const container = document.getElementById("listChain");
       const targetNode = container.children[data.operation.index];
       if (targetNode) {
@@ -784,7 +770,6 @@ const App = {
       if (data.success) {
         sfx.clear();
         this.clearAlert("listAlert");
-        this.appendHistoryEntry(data.operation);
         this.renderLinkedList(data.linked_list);
       }
     } catch (err) {
@@ -840,13 +825,11 @@ const App = {
       const wrapper = document.createElement("div");
       wrapper.className = "node-wrapper";
 
-      // Badge de Cabeza
       let headTag = "";
       if (node.is_head) {
         headTag = `<span class="node-head-badge">HEAD (Cabeza)</span>`;
       }
 
-      // Animación al insertar
       let insertClass = "";
       if (animOpts.insertedValue !== undefined && node.value === animOpts.insertedValue) {
         insertClass = "anim-node-insert";
@@ -868,7 +851,6 @@ const App = {
       container.appendChild(wrapper);
     });
 
-    // Puntero final NULL
     const nullNode = document.createElement("div");
     nullNode.className = "null-node";
     nullNode.textContent = "⊘ NULL";
@@ -891,11 +873,6 @@ const App = {
         this.renderStack(data.stack);
         this.renderQueue(data.queue);
         this.renderLinkedList(data.linked_list);
-        this.appendHistoryEntry({
-          action: "LLENADO",
-          message: `Llenado rápido ejecutado: Pila (+${data.added.stack.length}), Cola (+${data.added.queue.length}), Lista (+${data.added.linked_list.length}).`,
-          time_complexity: "O(K)"
-        });
       }
     } catch (err) {
       console.error("Error en llenado rápido:", err);
@@ -914,8 +891,6 @@ const App = {
         this.renderStack(data.stack);
         this.renderQueue(data.queue);
         this.renderLinkedList(data.linked_list);
-        const list = document.getElementById("historyList");
-        list.innerHTML = `<div class="history-empty">Reinicio completado. Todas las estructuras están vacías.</div>`;
       }
     } catch (err) {
       console.error("Error al reiniciar todo:", err);
@@ -937,31 +912,6 @@ const App = {
   clearAlert(alertId) {
     const alertEl = document.getElementById(alertId);
     if (alertEl) alertEl.classList.add("hidden");
-  },
-
-  appendHistoryEntry(record) {
-    const list = document.getElementById("historyList");
-    const emptyNotice = list.querySelector(".history-empty");
-    if (emptyNotice) emptyNotice.remove();
-
-    const entry = document.createElement("div");
-    entry.className = "history-entry";
-
-    const date = record.timestamp ? new Date(record.timestamp * 1000) : new Date();
-    const timeStr = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-
-    entry.innerHTML = `
-      <span class="history-time">${timeStr}</span>
-      <span class="op-badge op-${record.action}">${record.action}</span>
-      <span class="history-msg">${record.message || ""}</span>
-      <span class="history-complexity">${record.time_complexity || "O(1)"}</span>
-    `;
-
-    list.insertBefore(entry, list.firstChild);
-
-    while (list.children.length > 30) {
-      list.removeChild(list.lastChild);
-    }
   }
 };
 

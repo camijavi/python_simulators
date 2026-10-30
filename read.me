@@ -1,45 +1,120 @@
-toda la teoria explicada en clase:
+# Guía y Explicación del Simulador de Estructuras de Datos
 
-Linked List
+## 1. Teoría Explicada en Clase
 
-Insert: takes node and inserts in the right place.
-- No repeated values
-- Organized (ascendente)
+### Linked List (Lista Enlazada)
+- **Insert**: Toma un nodo y lo inserta en el lugar exacto.
+  - Sin valores repetidos (no se permiten duplicados).
+  - Organizada en orden **ascendente**.
+- **Remove**: Una vez eliminado el nodo, la lista permanece organizada.
+  - Eliminar nodo de la cabeza (`remove_head`).
+  - Eliminar último nodo (`remove_tail`).
+  - Eliminar nodo por valor específico (`remove_value`).
+  - Siempre organizada.
 
-Remove: once you remove node, list must be organized. 
-- Remove node from head, remove last node and remove
-- Always organized
+### Stacks (Pilas - LIFO)
+- **Principio**: *Last In - First Out* (El último en entrar es el primero en salir).
+- **Operaciones**:
+  - `Push`: Agrega un nuevo elemento en la cima (`stack.append()`).
+  - `Pop`: Retira el elemento de la cima (`stack.pop()`).
+  - `Peek`: Inspecciona el último elemento de la lista sin retirarlo (`stack[-1]`).
+- Representación conceptual: `Stack = [ ]`.
 
+### Queue (Colas - FIFO)
+- **Principio**: *First In - First Out* (El primero en entrar es el primero en salir).
+- **Analogía**: Fila del supermercado o lista de reproducción de YouTube (se reproduce primero el que se agregó primero).
+- **Operaciones**:
+  - `Enqueue`: Agrega un nuevo elemento al final de la cola (back / rear).
+  - `Dequeue`: Retira el elemento que está al frente (front).
+  - `Front / Peek`: Observa el elemento ubicado al frente de la cola.
 
+---
 
-Stacks
+## 2. ¿Cómo Funciona el Simulador?
 
-Operations:
+El simulador es una aplicación web interactiva desarrollada con **Python** y **Flask** en el backend y una interfaz moderna con **animaciones CSS, iconos SVG y síntesis de audio** en el frontend.
 
-- Push: add a new element to the top
-- Pop: remove top element
-- Peek: look what’s on the top 
+### A. Navegación por Pestañas Individuales
+En la parte superior se presentan tres pestañas principales para navegar de forma independiente e individual en cada simulador:
+1. **Pestaña Pila (Stack)**: Muestra exclusivamente el simulador vertical LIFO.
+2. **Pestaña Cola (Queue)**: Muestra la cinta horizontal de flujo FIFO.
+3. **Pestaña Lista Enlazada (Linked List)**: Muestra la cadena de nodos con punteros y enlaces dinámicos.
 
-Stack = [ ] 
+---
 
-stack.append()       
-Stack.pop()
-stack  [ ] —> peek: access the last element on the list
+### B. Simulador de Pila (Stack - LIFO)
+1. **Vaso de Precipitados Vertical**:
+   - Posee un fondo cerrado y un tope abierto superior.
+   - Cuenta con un puntero dinámico flotante **TOPE [i]** que sigue en tiempo real la altura del elemento más reciente.
+2. **Operaciones Disponibles**:
+   - **Apilar (Push)**: Ingresa un valor en la caja de texto (o genera uno aleatorio con el botón de dado) y pulsa "Apilar". El elemento cae con una animación de descenso hacia la cima de la pila.
+   - **Desapilar (Pop)**: Retira el elemento de la cima con una animación ascendente de despegue y desvanecimiento.
+   - **Ver Tope (Peek)**: Hace palpitar en color azul brillante el elemento de la cima sin modificar la estructura.
+   - **Vaciar**: Limpia todos los elementos de la pila.
+3. **Control de Capacidad**:
+   - Mediante el control deslizante (slider) se puede configurar la capacidad máxima (3 a 10 elementos).
+   - Si se intenta apilar más allá del límite, se activa la alerta de **Desbordamiento de Pila (Stack Overflow)**.
+   - Si se intenta desapilar una pila vacía, se activa la alerta de **Subdesbordamiento (Stack Underflow)**.
 
+---
 
-LIFO 
-LAST IN - FIRST OUT
+### C. Simulador de Cola (Queue - FIFO)
+1. **Tubería / Pista Horizontal de Flujo**:
+   - Los elementos entran por el extremo derecho (**FINAL / REAR**) y avanzan hacia la izquierda (**FRENTE / FRONT**).
+   - Punteros visuales independientes marcan claramente quién es el primer elemento a ser atendido (**FRENTE**, índice 0) y quién fue el último en llegar (**FINAL**).
+2. **Operaciones Disponibles**:
+   - **Encolar (Add)**: Agrega un elemento deslizándolo hacia el final de la cola.
+   - **Desencolar**: Atiende y retira el elemento del frente con una animación hacia la izquierda.
+   - **Ver Frente**: Resalta el nodo en la posición 0.
+   - **Vaciar**: Limpia la cola por completo.
+3. **Control de Capacidad**:
+   - Ajustable entre 3 y 10 posiciones con protección ante **Queue Overflow** y **Queue Underflow**.
 
-Queue
-Like Line up at the grocery store
-It’s a normal order
+---
 
-FIFO: first in, first out
+### D. Simulador de Lista Enlazada Ordenada (Sorted Linked List)
+1. **Cadena Visual de Nodos**:
+   - Cada nodo está dividido en dos compartimentos de memoria:
+     - Compartimento de **Valor** (dato numérico e índice de posición).
+     - Compartimento de **Puntero** (`next ➔`).
+   - Los nodos están enlazados por flechas reactivas (`──►`).
+   - El primer nodo cuenta con el distintivo superior **HEAD (Cabeza)**.
+   - El último nodo apunta hacia el bloque terminador **⊘ NULL**.
+2. **Operaciones Disponibles**:
+   - **Insertar**: Inserta un número en la posición ordenada ascendente exacta. Si el número ya existe en la lista, el sistema lo bloquea emitiendo un sonido de error y una notificación de **Valor Duplicado**.
+   - **Quitar Cabeza**: Elimina el primer elemento (`head = head.next`) en tiempo $O(1)$.
+   - **Quitar Cola**: Recorre la lista hasta el penúltimo nodo y desconecta el último en tiempo $O(N)$.
+   - **Quitar Valor**: Permite ingresar un número específico y eliminarlo; los nodos adyacentes se reconectan automáticamente para mantener la lista íntegra y ordenada.
+   - **Buscar**: Recorre nodo por nodo comparando valores y reporta la posición encontrada junto al número de comparaciones realizadas, resaltando el nodo con un pulso luminoso.
+   - **Vaciar**: Restablece `HEAD = NULL`.
 
-Enqueue: new element added to the back
-Dequeue: Removes front element
-Front: look at the front most element
+---
 
-Examples:nLike Youtube playlist. U start with the first and then the 
+### E. Herramientas Globales y Efectos
+- **Selector de Velocidad**: Permite graduar la velocidad de las animaciones entre *Rápido (0.2s)*, *Normal (0.6s)* y *Lento (1.2s)*.
+- **Efectos de Sonido (Web Audio API)**: Tonos sintetizados en tiempo real para inserciones (tono ascendente), extracciones (tono descendente), inspecciones (campanilla) y errores (zumbador). Se puede silenciar con el botón "Sonido".
+- **Llenado Rápido (3)**: Carga 3 elementos de prueba aleatorios en las estructuras.
+- **Reiniciar Todo**: Vacía simultáneamente la pila, la cola y la lista enlazada.
+- **Sección Educativa**: Pestañas con comparativa detallada de complejidades, código Python canónico y aplicaciones en la vida real.
 
+---
 
+## 3. Instrucciones de Ejecución
+
+### Requisitos
+- Python 3.9 o superior
+- Flask (`pip install flask`)
+
+### Iniciar la Aplicación
+```bash
+python3 app.py
+```
+Abre tu navegador en:
+```
+http://127.0.0.1:5001
+```
+
+### Ejecutar las Pruebas Unitarias
+```bash
+python3 -m unittest discover
+```
