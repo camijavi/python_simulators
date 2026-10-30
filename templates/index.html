@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador Visual: Pilas, Colas y Listas Enlazadas</title>
+  <title>Simulador Visual</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
   <div class="app-container">
     <!-- Encabezado Superior -->
@@ -16,29 +20,33 @@
       <div class="header-branding">
         <div class="logo-icon">
           <!-- Icono SVG Pila -->
-          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m12 2 10 5-10 5-10-5Z"/>
-            <path d="m2 12 10 5 10-5"/>
-            <path d="m2 17 10 5 10-5"/>
+          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 2 10 5-10 5-10-5Z" />
+            <path d="m2 12 10 5 10-5" />
+            <path d="m2 17 10 5 10-5" />
           </svg>
           <span class="icon-divider">/</span>
           <!-- Icono SVG Cola -->
-          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
           <span class="icon-divider">/</span>
           <!-- Icono SVG Lista Enlazada -->
-          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          <svg class="svg-icon logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
           </svg>
         </div>
         <div>
           <h1>Simulador Visual de Estructuras de Datos</h1>
-          <p class="subtitle">Explorador Interactivo de Algoritmos: Pila (LIFO), Cola (FIFO) y Lista Enlazada Ordenada</p>
+          <p class="subtitle">Explorador Interactivo de Algoritmos: Pila (LIFO), Cola (FIFO) y Lista Enlazada Ordenada
+          </p>
           <p class="header-authors">Made by <strong>Camila Navarro</strong> &amp; <strong>Francis Solorzano</strong></p>
         </div>
       </div>
@@ -56,30 +64,34 @@
           </div>
 
           <button id="soundToggle" class="btn btn-icon" title="Activar/Desactivar efectos de sonido">
-            <svg class="svg-icon sound-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            <svg class="svg-icon sound-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
             </svg>
             <span class="sound-text">Sonido: ACTIVO</span>
           </button>
 
           <button id="bulkFillBtn" class="btn btn-secondary" title="Agregar elementos aleatorios a la estructura">
-            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="18" height="18" x="3" y="3" rx="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
-              <circle cx="15.5" cy="8.5" r="1.5" fill="currentColor"/>
-              <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-              <circle cx="8.5" cy="15.5" r="1.5" fill="currentColor"/>
-              <circle cx="15.5" cy="15.5" r="1.5" fill="currentColor"/>
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+              <circle cx="15.5" cy="8.5" r="1.5" fill="currentColor" />
+              <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+              <circle cx="8.5" cy="15.5" r="1.5" fill="currentColor" />
+              <circle cx="15.5" cy="15.5" r="1.5" fill="currentColor" />
             </svg>
             Llenado Rápido (3)
           </button>
 
-          <button id="resetAllBtn" class="btn btn-danger-outline" title="Reiniciar todas las estructuras a estado vacío">
-            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-              <path d="M3 3v5h5"/>
+          <button id="resetAllBtn" class="btn btn-danger-outline"
+            title="Reiniciar todas las estructuras a estado vacío">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
             </svg>
             Reiniciar Todo
           </button>
@@ -90,30 +102,33 @@
     <!-- Barra de Pestañas de Simuladores Individuales -->
     <nav class="simulator-tabs-nav" role="tablist" aria-label="Simuladores">
       <button class="sim-tab-btn active" data-sim="stack" role="tab" aria-selected="true">
-        <svg class="svg-icon tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m12 2 10 5-10 5-10-5Z"/>
-          <path d="m2 12 10 5 10-5"/>
-          <path d="m2 17 10 5 10-5"/>
+        <svg class="svg-icon tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 2 10 5-10 5-10-5Z" />
+          <path d="m2 12 10 5 10-5" />
+          <path d="m2 17 10 5 10-5" />
         </svg>
         <span>Pila (Stack)</span>
         <span class="tab-badge badge-stack">LIFO</span>
       </button>
 
       <button class="sim-tab-btn" data-sim="queue" role="tab" aria-selected="false">
-        <svg class="svg-icon tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        <svg class="svg-icon tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
         <span>Cola (Queue)</span>
         <span class="tab-badge badge-queue">FIFO</span>
       </button>
 
       <button class="sim-tab-btn" data-sim="linkedlist" role="tab" aria-selected="false">
-        <svg class="svg-icon tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        <svg class="svg-icon tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
         </svg>
         <span>Lista Enlazada (Linked List)</span>
         <span class="tab-badge badge-list">ORDENADA</span>
@@ -122,7 +137,7 @@
 
     <!-- Contenedor Principal de Pestañas de Simuladores -->
     <main class="simulators-tab-container">
-      
+
       <!-- ================= PESTAÑA: PILA (STACK) ================= -->
       <section class="simulator-card stack-card sim-panel active" id="stackSection" role="tabpanel">
         <div class="card-header">
@@ -137,17 +152,20 @@
         </div>
 
         <p class="card-desc">
-          <strong>Último en Entrar, Primero en Salir (LIFO)</strong>: Las operaciones de inserción y extracción se realizan exclusivamente en el <em>TOPE</em>. Como una pila de platos, el último que pones es el primero que retiras.
+          <strong>Último en Entrar, Primero en Salir (LIFO)</strong>: Las operaciones de inserción y extracción se
+          realizan exclusivamente en el <em>TOPE</em>. Como una pila de platos, el último que pones es el primero que
+          retiras.
         </p>
 
         <!-- Controles de Pila -->
         <div class="controls-panel">
           <div class="input-row">
             <div class="input-wrapper">
-              <input type="text" id="stackInput" placeholder="Valor (ej. Plato 1, 42)" maxlength="16" autocomplete="off">
+              <input type="text" id="stackInput" placeholder="Valor (ej. Plato 1, 42)" maxlength="16"
+                autocomplete="off">
               <button class="btn btn-ghost" id="stackRandomBtn" title="Generar valor aleatorio">
                 <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                 </svg>
               </button>
             </div>
@@ -156,34 +174,29 @@
           <div class="actions-row">
             <button id="stackPushBtn" class="btn btn-primary" title="Insertar elemento en el tope">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M12 5v14M19 12l-7 7-7-7"/>
+                <path d="M12 5v14M19 12l-7 7-7-7" />
               </svg>
               Apilar (Push)
             </button>
             <button id="stackPopBtn" class="btn btn-warning" title="Retirar elemento del tope">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M12 19V5M5 12l7-7 7 7"/>
+                <path d="M12 19V5M5 12l7-7 7 7" />
               </svg>
               Desapilar (Pop)
             </button>
             <button id="stackPeekBtn" class="btn btn-info" title="Inspeccionar elemento en la cima">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
-                <circle cx="12" cy="12" r="3"/>
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                <circle cx="12" cy="12" r="3" />
               </svg>
               Ver Tope (Peek)
             </button>
             <button id="stackClearBtn" class="btn btn-outline" title="Vaciar la pila">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
               </svg>
               Vaciar
             </button>
-          </div>
-
-          <div class="slider-row">
-            <label for="stackCapacitySlider">Capacidad Máxima: <span id="stackCapVal">7</span></label>
-            <input type="range" id="stackCapacitySlider" min="3" max="10" value="7">
           </div>
         </div>
 
@@ -195,7 +208,7 @@
           <div class="canvas-ruler">
             <div class="ruler-marker top-marker">Tope Abierto (Entrada y Salida)</div>
           </div>
-          
+
           <div class="stack-beaker" id="stackBeaker">
             <div class="pointer-tag pointer-top hidden" id="stackTopPointer">
               <span class="pointer-arrow">➔</span>
@@ -206,9 +219,9 @@
 
             <div class="empty-state" id="stackEmptyState">
               <svg class="svg-icon empty-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
               <p>La pila está vacía</p>
               <span class="subtext">Apila un elemento para comenzar</span>
@@ -224,8 +237,10 @@
         <div class="card-footer">
           <div class="stat-pill"><span class="stat-label">Vacía:</span> <strong id="stackIsEmpty">Sí</strong></div>
           <div class="stat-pill"><span class="stat-label">Llena:</span> <strong id="stackIsFull">No</strong></div>
-          <div class="stat-pill"><span class="stat-label">Elemento en Cima:</span> <strong id="stackTopVal">Ninguno</strong></div>
-          <div class="stat-pill"><span class="stat-label">Complejidad:</span> <strong class="badge-complexity">O(1)</strong></div>
+          <div class="stat-pill"><span class="stat-label">Elemento en Cima:</span> <strong
+              id="stackTopVal">Ninguno</strong></div>
+          <div class="stat-pill"><span class="stat-label">Complejidad:</span> <strong
+              class="badge-complexity">O(1)</strong></div>
         </div>
       </section>
 
@@ -243,17 +258,19 @@
         </div>
 
         <p class="card-desc">
-          <strong>Primero en Entrar, Primero en Salir (FIFO)</strong>: Como una fila en el supermercado o lista de reproducción. Se encola por el <em>FINAL (Rear)</em> y se atiende por el <em>FRENTE (Front)</em>.
+          <strong>Primero en Entrar, Primero en Salir (FIFO)</strong>: Como una fila en el supermercado o lista de
+          reproducción. Se encola por el <em>FINAL (Rear)</em> y se atiende por el <em>FRENTE (Front)</em>.
         </p>
 
         <!-- Controles de Cola -->
         <div class="controls-panel">
           <div class="input-row">
             <div class="input-wrapper">
-              <input type="text" id="queueInput" placeholder="Valor (ej. Cliente 1, 99)" maxlength="16" autocomplete="off">
+              <input type="text" id="queueInput" placeholder="Valor (ej. Cliente 1, 99)" maxlength="16"
+                autocomplete="off">
               <button class="btn btn-ghost" id="queueRandomBtn" title="Generar valor aleatorio">
                 <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                 </svg>
               </button>
             </div>
@@ -262,34 +279,29 @@
           <div class="actions-row">
             <button id="queueEnqueueBtn" class="btn btn-primary" title="Insertar elemento al final de la cola">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
+                <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
               Encolar (Add)
             </button>
             <button id="queueDequeueBtn" class="btn btn-warning" title="Atender/Retirar elemento del frente">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
               Desencolar
             </button>
             <button id="queuePeekBtn" class="btn btn-info" title="Inspeccionar elemento del frente">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
-                <circle cx="12" cy="12" r="3"/>
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                <circle cx="12" cy="12" r="3" />
               </svg>
               Ver Frente
             </button>
             <button id="queueClearBtn" class="btn btn-outline" title="Vaciar la cola">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
               </svg>
               Vaciar
             </button>
-          </div>
-
-          <div class="slider-row">
-            <label for="queueCapacitySlider">Capacidad Máxima: <span id="queueCapVal">7</span></label>
-            <input type="range" id="queueCapacitySlider" min="3" max="10" value="7">
           </div>
         </div>
 
@@ -301,14 +313,14 @@
           <div class="pipeline-labels">
             <div class="pipeline-end-tag front-tag">
               <svg class="svg-icon tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6 6 18M6 6l12 12"/>
+                <path d="M18 6 6 18M6 6l12 12" />
               </svg>
               <span>FRENTE (Salida / Dequeue)</span>
             </div>
             <div class="pipeline-end-tag rear-tag">
               <span>FINAL (Entrada / Enqueue)</span>
               <svg class="svg-icon tag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 5v14M5 12h14"/>
+                <path d="M12 5v14M5 12h14" />
               </svg>
             </div>
           </div>
@@ -327,8 +339,8 @@
 
             <div class="empty-state" id="queueEmptyState">
               <svg class="svg-icon empty-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
               </svg>
               <p>La cola está vacía</p>
               <span class="subtext">Encola un elemento para iniciar la fila</span>
@@ -344,9 +356,11 @@
         <div class="card-footer">
           <div class="stat-pill"><span class="stat-label">Vacía:</span> <strong id="queueIsEmpty">Sí</strong></div>
           <div class="stat-pill"><span class="stat-label">Llena:</span> <strong id="queueIsFull">No</strong></div>
-          <div class="stat-pill"><span class="stat-label">Frente:</span> <strong id="queueFrontVal">Ninguno</strong></div>
+          <div class="stat-pill"><span class="stat-label">Frente:</span> <strong id="queueFrontVal">Ninguno</strong>
+          </div>
           <div class="stat-pill"><span class="stat-label">Final:</span> <strong id="queueRearVal">Ninguno</strong></div>
-          <div class="stat-pill"><span class="stat-label">Complejidad:</span> <strong class="badge-complexity">O(1)</strong></div>
+          <div class="stat-pill"><span class="stat-label">Complejidad:</span> <strong
+              class="badge-complexity">O(1)</strong></div>
         </div>
       </section>
 
@@ -365,8 +379,10 @@
 
         <p class="card-desc">
           <strong>Reglas explicadas en clase (read.me)</strong>:
-          <br>• <strong>Inserción:</strong> Inserta el nodo en la posición exacta para mantener el orden <em>ascendente</em>. <em>Sin valores repetidos</em>.
-          <br>• <strong>Eliminación:</strong> Conserva siempre la lista organizada (eliminar cabeza, eliminar cola o eliminar valor específico).
+          <br>• <strong>Inserción:</strong> Inserta el nodo en la posición exacta para mantener el orden
+          <em>ascendente</em>. <em>Sin valores repetidos</em>.
+          <br>• <strong>Eliminación:</strong> Conserva siempre la lista organizada (eliminar cabeza, eliminar cola o
+          eliminar valor específico).
         </p>
 
         <!-- Controles de Lista Enlazada -->
@@ -376,20 +392,20 @@
               <input type="number" id="listInput" placeholder="Número (ej. 25, 10, 50)" autocomplete="off">
               <button class="btn btn-ghost" id="listRandomBtn" title="Generar número aleatorio único">
                 <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                 </svg>
               </button>
             </div>
             <button id="listInsertBtn" class="btn btn-primary" title="Inserta en la posición ascendente correcta">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M12 5v14M5 12h14"/>
+                <path d="M12 5v14M5 12h14" />
               </svg>
               Insertar
             </button>
             <button id="listSearchBtn" class="btn btn-info" title="Buscar posición del nodo">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="m21 21-4.3-4.3"/>
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
               </svg>
               Buscar
             </button>
@@ -398,34 +414,30 @@
           <div class="actions-row list-actions-row">
             <button id="listRemoveHeadBtn" class="btn btn-warning" title="Eliminar el primer nodo (Cabeza)">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6 6 18M6 6l12 12"/>
+                <path d="M18 6 6 18M6 6l12 12" />
               </svg>
               Quitar Cabeza
             </button>
             <button id="listRemoveTailBtn" class="btn btn-warning" title="Eliminar el último nodo (Cola)">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6 6 18M6 6l12 12"/>
+                <path d="M18 6 6 18M6 6l12 12" />
               </svg>
               Quitar Cola
             </button>
-            <button id="listRemoveValBtn" class="btn btn-danger-outline" title="Eliminar el nodo con el valor ingresado">
+            <button id="listRemoveValBtn" class="btn btn-danger-outline"
+              title="Eliminar el nodo con el valor ingresado">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="m15 9-6 6M9 9l6 6"/>
+                <circle cx="12" cy="12" r="10" />
+                <path d="m15 9-6 6M9 9l6 6" />
               </svg>
               Quitar Valor
             </button>
             <button id="listClearBtn" class="btn btn-outline" title="Vaciar toda la lista">
               <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
               </svg>
               Vaciar
             </button>
-          </div>
-
-          <div class="slider-row">
-            <label for="listCapacitySlider">Capacidad Máxima: <span id="listCapVal">7</span></label>
-            <input type="range" id="listCapacitySlider" min="3" max="10" value="7">
           </div>
         </div>
 
@@ -447,8 +459,8 @@
 
             <div class="empty-state" id="listEmptyState">
               <svg class="svg-icon empty-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
               </svg>
               <p>La lista enlazada está vacía (HEAD = NULL)</p>
               <span class="subtext">Inserta un número para ubicarlo ordenadamente</span>
@@ -463,10 +475,14 @@
         <!-- Resumen de Estado -->
         <div class="card-footer">
           <div class="stat-pill"><span class="stat-label">Vacía:</span> <strong id="listIsEmpty">Sí</strong></div>
-          <div class="stat-pill"><span class="stat-label">Cabeza (Head):</span> <strong id="listHeadVal">NULL</strong></div>
-          <div class="stat-pill"><span class="stat-label">Cola (Tail):</span> <strong id="listTailVal">NULL</strong></div>
-          <div class="stat-pill"><span class="stat-label">Duplicados:</span> <strong class="badge-complexity">Bloqueados</strong></div>
-          <div class="stat-pill"><span class="stat-label">Complejidad Inserción:</span> <strong class="badge-complexity">O(N)</strong></div>
+          <div class="stat-pill"><span class="stat-label">Cabeza (Head):</span> <strong id="listHeadVal">NULL</strong>
+          </div>
+          <div class="stat-pill"><span class="stat-label">Cola (Tail):</span> <strong id="listTailVal">NULL</strong>
+          </div>
+          <div class="stat-pill"><span class="stat-label">Duplicados:</span> <strong
+              class="badge-complexity">Bloqueados</strong></div>
+          <div class="stat-pill"><span class="stat-label">Complejidad Inserción:</span> <strong
+              class="badge-complexity">O(N)</strong></div>
         </div>
       </section>
 
@@ -477,15 +493,15 @@
       <div class="section-tabs" role="tablist">
         <button class="tab-btn active" data-tab="comparison">
           <svg class="svg-icon tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 3v18h18"/>
-            <path d="m19 9-5 5-4-4-3 3"/>
+            <path d="M3 3v18h18" />
+            <path d="m19 9-5 5-4-4-3 3" />
           </svg>
           Comparativa: Pila vs Cola vs Lista Enlazada
         </button>
         <button class="tab-btn" data-tab="code">
           <svg class="svg-icon tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="16 18 22 12 16 6"/>
-            <polyline points="8 6 2 12 8 18"/>
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
           </svg>
           Código Python y Complejidades
         </button>
@@ -504,7 +520,8 @@
               <li><strong>Ordenamiento:</strong> Secuencial cronológico inverso</li>
               <li><strong>Duplicados:</strong> Permitidos</li>
               <li><strong>Complejidad:</strong> O(1) Push, O(1) Pop, O(1) Peek</li>
-              <li><strong>Estructura Python:</strong> <code>list</code> con <code>append()</code> y <code>pop()</code></li>
+              <li><strong>Estructura Python:</strong> <code>list</code> con <code>append()</code> y <code>pop()</code>
+              </li>
             </ul>
           </div>
           <div class="comp-card">
@@ -517,7 +534,8 @@
               <li><strong>Ordenamiento:</strong> Secuencial cronológico normal</li>
               <li><strong>Duplicados:</strong> Permitidos</li>
               <li><strong>Complejidad:</strong> O(1) Enqueue, O(1) Dequeue</li>
-              <li><strong>Estructura Python:</strong> <code>collections.deque</code> con <code>append()</code> y <code>popleft()</code></li>
+              <li><strong>Estructura Python:</strong> <code>collections.deque</code> con <code>append()</code> y
+                <code>popleft()</code></li>
             </ul>
           </div>
           <div class="comp-card">
@@ -606,7 +624,9 @@
 
         <div class="code-note">
           <strong>Nota Teórica de Clase (read.me):</strong>
-          En una lista enlazada ordenada, cada nodo almacena un valor y una referencia <code>next</code> al siguiente nodo. Para insertar o eliminar manteniendo el orden ascendente, se recorre la lista comparando valores. Si el elemento a insertar ya existe, se rechaza la operación para garantizar la unicidad de datos.
+          En una lista enlazada ordenada, cada nodo almacena un valor y una referencia <code>next</code> al siguiente
+          nodo. Para insertar o eliminar manteniendo el orden ascendente, se recorre la lista comparando valores. Si el
+          elemento a insertar ya existe, se rechaza la operación para garantizar la unicidad de datos.
         </div>
       </div>
 
@@ -614,10 +634,12 @@
 
     <!-- Pie de Página -->
     <footer class="app-footer">
-      <p>Simulador Visual de Estructuras de Datos • Made by <strong>Camila Navarro</strong> &amp; <strong>Francis Solorzano</strong></p>
+      <p>Simulador Visual de Estructuras de Datos • Made by <strong>Camila Navarro</strong> &amp; <strong>Francis
+          Solorzano</strong></p>
     </footer>
   </div>
 
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
+
 </html>

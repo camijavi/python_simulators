@@ -172,9 +172,6 @@ const App = {
     document.getElementById("stackInput").addEventListener("keydown", (e) => {
       if (e.key === "Enter") this.stackPush();
     });
-    document.getElementById("stackCapacitySlider").addEventListener("change", (e) => {
-      this.setStackCapacity(parseInt(e.target.value, 10));
-    });
 
     // ================= Controles de Cola =================
     document.getElementById("queueEnqueueBtn").addEventListener("click", () => this.queueEnqueue());
@@ -186,9 +183,6 @@ const App = {
     });
     document.getElementById("queueInput").addEventListener("keydown", (e) => {
       if (e.key === "Enter") this.queueEnqueue();
-    });
-    document.getElementById("queueCapacitySlider").addEventListener("change", (e) => {
-      this.setQueueCapacity(parseInt(e.target.value, 10));
     });
 
     // ================= Controles de Lista Enlazada =================
@@ -203,9 +197,6 @@ const App = {
     });
     document.getElementById("listInput").addEventListener("keydown", (e) => {
       if (e.key === "Enter") this.listInsert();
-    });
-    document.getElementById("listCapacitySlider").addEventListener("change", (e) => {
-      this.setListCapacity(parseInt(e.target.value, 10));
     });
   },
 
@@ -230,18 +221,9 @@ const App = {
       const res = await fetch("/api/state");
       const data = await res.json();
       if (data.success) {
-        this.stackCapacity = data.stack.capacity;
-        this.queueCapacity = data.queue.capacity;
-        this.listCapacity = data.linked_list.capacity;
-
-        document.getElementById("stackCapacitySlider").value = this.stackCapacity;
-        document.getElementById("stackCapVal").textContent = this.stackCapacity;
-
-        document.getElementById("queueCapacitySlider").value = this.queueCapacity;
-        document.getElementById("queueCapVal").textContent = this.queueCapacity;
-
-        document.getElementById("listCapacitySlider").value = this.listCapacity;
-        document.getElementById("listCapVal").textContent = this.listCapacity;
+        this.stackCapacity = 7;
+        this.queueCapacity = 7;
+        this.listCapacity = 7;
 
         this.renderStack(data.stack);
         this.renderQueue(data.queue);
